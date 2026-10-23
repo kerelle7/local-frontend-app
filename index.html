@@ -4,15 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Local Mac Playground</title>
+    <script src="theme-init.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="card">
-        <h1>Hello from your Mac!</h1>
-        <p>This is a modular front-end app running locally.</p>
-        <button id="clickBtn">Click Me</button>
-        <p id="output"></p>
-    </div>
+    <header class="site-header">
+        <span class="site-title">Local Mac Playground</span>
+        <button id="themeToggle" class="theme-toggle" role="switch" aria-checked="false">
+            <span>Dark mode</span>
+            <span class="toggle-track" aria-hidden="true">
+                <span class="toggle-knob"></span>
+            </span>
+        </button>
+    </header>
+
+    <main>
+        <div class="card">
+            <h1>Hello from your Mac!</h1>
+            <p>This is a modular front-end app running locally.</p>
+            <button id="clickBtn">Click Me</button>
+            <p id="output"></p>
+        </div>
+    </main>
 
     <script src="script.js"></script>
 </body>
