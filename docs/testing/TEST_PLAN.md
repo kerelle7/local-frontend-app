@@ -19,6 +19,7 @@ Catch regressions in the app's behaviour, accessibility and layout on every pull
 - Accessibility to WCAG 2.1 A/AA (automated checks with axe), including color contrast in both themes.
 - Keyboard operation of the toggle.
 - Layout at phone width (375px).
+- Visual appearance (screenshot comparison) in both themes at desktop and phone sizes.
 
 **Out of scope**
 - Manual screen reader testing (VoiceOver, NVDA). Automated checks cover roles, names and states only.
@@ -38,6 +39,7 @@ Catch regressions in the app's behaviour, accessibility and layout on every pull
 | R-07 | Both themes meet WCAG 2.1 A/AA, including 4.5:1 text contrast. |
 | R-08 | The toggle works with the keyboard and shows a visible focus ring. |
 | R-09 | The page is usable at 375px wide with no horizontal scrolling. |
+| R-10 | The page's appearance does not change unintentionally in either theme. |
 
 ## 4. Test naming convention
 
@@ -55,6 +57,7 @@ All automated tests follow this convention, and every ID in section 6 matches a 
 | `FLASH` | Theme applied before first paint | `tests/no-flash.spec.js` |
 | `A11Y` | Accessibility | `tests/accessibility.spec.js` |
 | `RESP` | Phone-width layout | `tests/responsive.spec.js` |
+| `VIS` | Visual appearance | `tests/visual.spec.js` |
 
 Shared setup and helpers live in `tests/fixtures.js` (not a spec file). To run a single case: `npx playwright test -g TC-THEME-06`.
 
@@ -68,6 +71,7 @@ CI enforces this with `.github/scripts/check-test-ids.js`: the run fails if a ti
 - **OS theme changes** are simulated with `page.emulateMedia({ colorScheme })`.
 - **Blocked storage** is simulated by making `localStorage.getItem`/`setItem` throw.
 - **Accessibility:** axe-core with tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, run after one click so the result text is checked, with the mouse moved away so normal (not hover) colors are measured.
+- **Visual:** full-page screenshots compared with baselines in `tests/visual.spec.js-snapshots/`. Baselines are made on Linux Chromium in CI, because fonts render differently on macOS; the cases are skipped elsewhere.
 - **Coverage:** V8 JavaScript coverage of `script.js` and `theme-init.js`, collected in Chromium.
 
 ## 6. Test cases
@@ -95,6 +99,10 @@ CI enforces this with `.github/scripts/check-test-ids.js`: the run fails if a ti
 | TC-RESP-01 | No horizontal scroll at 375px in light mode | R-09 | |
 | TC-RESP-02 | No horizontal scroll at 375px in dark mode | R-09 | |
 | TC-RESP-03 | Header title and toggle are both visible and do not overlap at 375px | R-09 | |
+| TC-VIS-01 | Light mode matches the desktop baseline | R-10 | 1280×720; Linux Chromium only |
+| TC-VIS-02 | Dark mode matches the desktop baseline | R-10 | 1280×720; Linux Chromium only |
+| TC-VIS-03 | Light mode matches the mobile baseline | R-10 | 375×812; Linux Chromium only |
+| TC-VIS-04 | Dark mode matches the mobile baseline | R-10 | 375×812; Linux Chromium only |
 
 ### Requirement coverage
 
@@ -109,6 +117,7 @@ CI enforces this with `.github/scripts/check-test-ids.js`: the run fails if a ti
 | R-07 | TC-A11Y-01, TC-A11Y-02, TC-A11Y-03 |
 | R-08 | TC-THEME-07 |
 | R-09 | TC-RESP-01, TC-RESP-02, TC-RESP-03 |
+| R-10 | TC-VIS-01, TC-VIS-02, TC-VIS-03, TC-VIS-04 |
 
 ## 7. Entry and exit criteria
 
@@ -125,6 +134,7 @@ CI enforces this with `.github/scripts/check-test-ids.js`: the run fails if a ti
 |---|---|
 | Flaky timing (e.g. paint timing read too early) | Tests wait for conditions instead of fixed delays; CI retries failures up to 2 times and reports them as flaky. |
 | Automated accessibility checks miss issues | Treat axe as a baseline; do a manual screen reader pass for larger UI changes. |
+| Screenshot differences from fonts or OS | Visual cases run only on Linux Chromium in CI, against baselines made there. |
 | Hover or transition states give wrong colors | Mouse moved away before axe; reduced motion disables transitions. |
 | Tests only run when someone remembers | Required `tests` check on `master` blocks merging until they pass. |
 
@@ -141,6 +151,11 @@ npm test
 - `npm test -- --project chromium` runs one browser; `npx playwright test -g TC-THEME-06` runs one case.
 - `npm run report` opens the HTML report. Coverage: `reports/coverage/index.html`. Full report with coverage: `npx monocart show-report reports/monocart/index.html`.
 
+**Updating visual baselines** (after an intended visual change, or for a new `VIS` case):
+1. Delete the affected PNGs in `tests/visual.spec.js-snapshots/` (or add the new test) and push.
+2. The CI run fails those cases with "snapshot doesn't exist" and uploads the new screenshots as the `visual-baselines` artifact.
+3. Download it (`gh run download <run-id> -n visual-baselines -D tests`), review the images, commit and push.
+
 **In CI:** the `Tests` workflow runs on every pull request, on pushes to `master`, and on demand (Actions → Tests → Run workflow).
 
 ## 10. Test artifacts
@@ -153,4 +168,5 @@ npm test
 | HTML report | `reports/html/` (CI artifact `test-reports`) |
 | JUnit XML | `reports/junit.xml` (CI artifact `test-reports`) |
 | Coverage | `reports/coverage/` HTML, `lcov.info`, `coverage-summary.json` (CI artifact `test-reports`) |
+| Visual baselines | `tests/visual.spec.js-snapshots/` (new ones: CI artifact `visual-baselines`) |
 | Failure evidence | `test-results/` screenshots and traces (CI artifact `test-reports`) |
