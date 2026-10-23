@@ -46,7 +46,7 @@ jobs:
         timeout-minutes: 14
         run: |
           attempt=0
-          for limit in 15s 6m; do
+          for limit in 6m 6m; do
             attempt=$((attempt + 1))
             if timeout --kill-after=30s "$limit" npx playwright install --with-deps; then
               exit 0
