@@ -25,7 +25,7 @@ jobs:
   browser-install-retry:
     name: browser install retry
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -38,26 +38,36 @@ jobs:
         run: npm ci
 
       # 15s is too short for a healthy install (about 40-55s), so attempt 1
-      # times out mid-download and attempt 2 has to recover
+      # times out mid-download and attempt 2 has to recover. Attempt 2 gets 8m
+      # (twice the real limit) so a slow runner doesn't fail the test: this
+      # checks the clean-up and retry, not mirror speed.
       - name: Install browsers with a forced first timeout
         id: install
-        timeout-minutes: 10
-        run: bash .github/scripts/install-browsers.sh 15s 4m
+        timeout-minutes: 12
+        run: bash .github/scripts/install-browsers.sh 15s 8m
 
+      # Runs even if the install failed, so the timings are always recorded
       - name: Check the retry path was taken
+        if: ${{ !cancelled() }}
         env:
           ATTEMPTS: ${{ steps.install.outputs.attempts }}
           STOPPED_APT: ${{ steps.install.outputs.stopped_apt }}
+          SWITCHED_MIRROR: ${{ steps.install.outputs.switched_mirror }}
+          SECONDS_TAKEN: ${{ steps.install.outputs.last_attempt_seconds }}
         run: |
           {
             echo "## Browser install retry self-test"
             echo ""
-            echo "| Attempts | Leftover apt-get stopped |"
-            echo "|---|---|"
-            echo "| ${ATTEMPTS:-none} | ${STOPPED_APT:-unknown} |"
+            echo "| Attempts | Attempt 2 took | Leftover apt-get stopped | Switched mirror |"
+            echo "|---|---|---|---|"
+            echo "| ${ATTEMPTS:-none} | ${SECONDS_TAKEN:-—}s | ${STOPPED_APT:-unknown} | ${SWITCHED_MIRROR:-unknown} |"
           } >> "$GITHUB_STEP_SUMMARY"
           if [ "$ATTEMPTS" != "2" ]; then
             echo "::error::Expected the install to need 2 attempts, got '${ATTEMPTS}'. If attempt 1 finished within 15s, the retry path wasn't exercised; lower the forced limit."
+            exit 1
+          fi
+          if [ "$SWITCHED_MIRROR" != "true" ]; then
+            echo "::error::Attempt 2 should have used a different mirror, but switched_mirror is '${SWITCHED_MIRROR}'."
             exit 1
           fi
 
