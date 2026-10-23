@@ -48,12 +48,19 @@ jobs:
           attempt=0
           for limit in 15s 6m; do
             attempt=$((attempt + 1))
-            # timeout stops the whole process group, including apt
             if timeout --kill-after=30s "$limit" npx playwright install --with-deps; then
               exit 0
             fi
             echo "::warning::Browser install attempt $attempt failed or exceeded $limit"
-            # Finish any package setup the stopped attempt left half-done
+            # Playwright starts apt-get through sudo, so timeout can't stop it:
+            # stop it here, wait for the package lock, and finish any package
+            # setup the stopped attempt left half-done
+            sudo pkill -KILL -x apt-get || true
+            sudo pkill -KILL -x dpkg || true
+            for _ in $(seq 60); do
+              sudo fuser /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock > /dev/null 2>&1 || break
+              sleep 1
+            done
             sudo dpkg --configure -a || true
           done
           exit 1
