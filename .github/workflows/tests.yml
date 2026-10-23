@@ -43,10 +43,12 @@ jobs:
       # very slow. Each attempt gets its own time limit so a slow mirror costs
       # minutes rather than the whole job, then the install is tried again.
       - name: Install Playwright browsers
-        timeout-minutes: 14
+        timeout-minutes: 10
         run: |
           attempt=0
-          for limit in 6m 6m; do
+          # Healthy installs take about 40-55s. Attempt 1 catches a stuck
+          # download quickly; attempt 2 allows more for a slow but working mirror.
+          for limit in 3m 4m; do
             attempt=$((attempt + 1))
             if timeout --kill-after=30s "$limit" npx playwright install --with-deps; then
               exit 0
