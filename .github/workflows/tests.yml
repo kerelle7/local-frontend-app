@@ -39,8 +39,24 @@ jobs:
       - name: Check test naming convention
         run: node .github/scripts/check-test-ids.js
 
+      # Downloads system packages from the Ubuntu mirror, which is sometimes
+      # very slow. Each attempt gets its own time limit so a slow mirror costs
+      # minutes rather than the whole job, then the install is tried again.
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        timeout-minutes: 14
+        run: |
+          attempt=0
+          for limit in 15s 6m; do
+            attempt=$((attempt + 1))
+            # timeout stops the whole process group, including apt
+            if timeout --kill-after=30s "$limit" npx playwright install --with-deps; then
+              exit 0
+            fi
+            echo "::warning::Browser install attempt $attempt failed or exceeded $limit"
+            # Finish any package setup the stopped attempt left half-done
+            sudo dpkg --configure -a || true
+          done
+          exit 1
 
       - name: Run tests
         run: npx playwright test
