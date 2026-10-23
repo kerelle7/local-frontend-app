@@ -1,0 +1,89 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Cancel an older run when new commits are pushed to the same branch
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pull-requests: write # only to post the results comment
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check test naming convention
+        run: node .github/scripts/check-test-ids.js
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run tests
+        run: npx playwright test
+
+      - name: Summarize results and check coverage
+        if: ${{ !cancelled() }}
+        run: node .github/scripts/test-summary.js
+
+      # One comment per PR, updated on each run. Skipped for PRs from forks,
+      # whose token can't write comments.
+      - name: Post results to the pull request
+        if: ${{ !cancelled() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          marker='<!-- tests-results-comment -->'
+          summary=$(cat reports/summary.md 2>/dev/null || echo '## Test results'$'\n\n''The run did not produce a summary; see the run log.')
+          body="$marker"$'\n'"$summary"$'\n\n'"Commit \`${SHA:0:7}\` · [Run details, HTML report and coverage]($RUN_URL#artifacts)"
+          id=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate \
+            --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$id" -f body="$body" > /dev/null
+          else
+            gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="$body" > /dev/null
+          fi
+
+      - name: Upload reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: |
+            reports/
+            test-results/
+          retention-days: 30
+
+      # Screenshot baselines written on this run (e.g. a new visual test);
+      # download, review and commit them to make them the reference
+      - name: Upload new visual baselines
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines
+          path: tests/**/*-snapshots/
+          if-no-files-found: ignore
+          retention-days: 30
