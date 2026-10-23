@@ -27,9 +27,12 @@ if (root) {
     out.push('## Test results', '', 'No JUnit report found; the test run did not complete.', '');
 }
 
-let coverageOk = true;
+// A missing summary fails the gate, so losing coverage collection can't silently disable it
+let coverageOk = false;
 const summaryPath = 'reports/coverage/coverage-summary.json';
-if (fs.existsSync(summaryPath)) {
+if (!fs.existsSync(summaryPath)) {
+    out.push('## Coverage', '', `**No coverage summary found** at \`${summaryPath}\`; failing the ${MIN_LINE_COVERAGE}% coverage gate.`, '');
+} else {
     const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
     out.push('## Coverage (Chromium, app scripts)', '', '| File | Lines | Branches | Functions |', '|---|---|---|---|');
     for (const [file, s] of Object.entries(summary)) {
