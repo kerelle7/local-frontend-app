@@ -9,10 +9,13 @@ on:
 permissions:
   contents: read
 
-# Cancel an older run when new commits are pushed to the same branch
+# On PRs, a new push cancels the older run on the same branch. Master runs
+# get a group of their own: a shared group would let a newer pending run
+# replace an older pending one, and that commit would never be tested or
+# published.
 concurrency:
-  group: tests-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.event_name == 'pull_request' && format('tests-{0}', github.ref) || format('tests-run-{0}', github.run_id) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   tests:
@@ -87,3 +90,102 @@ jobs:
           path: tests/**/*-snapshots/
           if-no-files-found: ignore
           retention-days: 30
+
+  # Adds this commit's reports to the `test-reports` branch, which holds the
+  # history of master reports (see .github/scripts/build-report-site.js).
+  publish-reports:
+    name: publish reports
+    needs: tests
+    # Only master commits are published; PR results stay as run artifacts.
+    # Runs even when tests fail, since that's when the report matters most.
+    if: ${{ !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # push to the test-reports branch
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      # Missing if the test job failed before uploading; the report page then says so
+      - name: Download this run's reports
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: test-reports
+          path: artifact
+
+      # Runs for several commits can publish at once, so each attempt starts
+      # from the latest history and retries if another run pushed first.
+      - name: Add this commit's report to the history branch
+        env:
+          SITE_DIR: history
+          REPORTS_DIR: artifact/reports
+          SHA: ${{ github.sha }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_DATE: ${{ github.event.head_commit.timestamp }}
+          TESTS_RESULT: ${{ needs.tests.result }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            if git fetch --depth 1 origin test-reports; then
+              git worktree add -B test-reports history FETCH_HEAD
+            else
+              git worktree add --orphan -B test-reports history
+            fi
+            node .github/scripts/build-report-site.js
+            git -C history add -A
+            git -C history diff --cached --quiet || git -C history commit -q -m "Test report for ${SHA::7}"
+            if git -C history push origin test-reports; then exit 0; fi
+            echo "The history branch changed during publishing; retrying (attempt $attempt)"
+            git worktree remove --force history
+            sleep $((attempt * 5))
+          done
+          exit 1
+
+  # Deploys the site: the app from the current tip of master at the root, and
+  # the report history under /test-reports/. Built from the latest state rather
+  # than this run's commit, so a re-run of an old commit can't put an old app
+  # live, and a newer deploy replacing a pending one loses nothing.
+  deploy-pages:
+    name: deploy pages
+    needs: publish-reports
+    if: ${{ !cancelled() && needs.publish-reports.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}test-reports/
+    concurrency:
+      group: pages-deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Assemble site
+        run: |
+          git fetch --depth 1 origin test-reports
+          mkdir -p _site/test-reports
+          git archive HEAD -- . ':!.github' | tar -x -C _site
+          git archive FETCH_HEAD | tar -x -C _site/test-reports
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
