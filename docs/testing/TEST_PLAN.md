@@ -183,9 +183,15 @@ npm test
 | Failure evidence | CI artifact `test-reports` → `test-results/` (screenshots, traces) | 30 days |
 | New visual baselines | CI artifact `visual-baselines` (see section 9) | 30 days |
 
-**How publishing works:** for each push to `master`, the `publish reports` job in `.github/workflows/tests.yml` runs after the tests, whether they passed or failed. It then:
-1. adds that commit's reports to the `test-reports` branch, using `.github/scripts/build-report-site.js`;
-2. deploys GitHub Pages with the app at the site root and the report history under `/test-reports/`.
+**How publishing works:** every push to `master` is tested and published. Master runs are never cancelled or merged together. Two jobs in `.github/workflows/tests.yml` run after the tests, whether they passed or failed:
+1. **`publish reports`** adds that commit's reports to the `test-reports` branch using `.github/scripts/build-report-site.js`. If another run published at the same time, it starts again from the latest history and retries.
+2. **`deploy pages`** deploys GitHub Pages:
+   - the app from the current tip of `master` at the site root;
+   - the report history under `/test-reports/`.
+
+   It always builds from the latest state, so re-running an old commit adds its report without putting an old app live.
+
+Runs are listed by commit date, newest first, so a re-run of an old commit doesn't become "latest".
 
 The `test-reports` branch holds generated files only. Don't edit it by hand. PR runs are not published; their reports stay as run artifacts.
 

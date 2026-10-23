@@ -67,6 +67,8 @@ const run = {
 const runsPath = path.join(SITE, 'runs.json');
 let runs = fs.existsSync(runsPath) ? JSON.parse(fs.readFileSync(runsPath, 'utf8')) : [];
 runs = [run, ...runs.filter((r) => r.sha !== SHA)];
+// Newest commit first, so a re-run of an old commit doesn't become "latest"
+runs.sort((a, b) => new Date(b.date) - new Date(a.date));
 for (const old of runs.slice(KEEP)) fs.rmSync(path.join(SITE, old.sha), { recursive: true, force: true });
 runs = runs.slice(0, KEEP);
 fs.writeFileSync(runsPath, JSON.stringify(runs, null, 2) + '\n');
