@@ -193,6 +193,8 @@ npm test
 
 Runs are listed by commit date, newest first, so a re-run of an old commit doesn't become "latest".
 
-The `test-reports` branch holds generated files only. Don't edit it by hand. PR runs are not published; their reports stay as run artifacts.
+The `test-reports` branch holds generated files only. Don't edit it by hand, merge it, or delete it: deleting it erases the report history.
+- **Single commit:** every publish replaces the branch with one commit holding the current reports. The history lives in its folders, so old commits add nothing, and the branch's size stays bounded at about the size of the 50 kept reports.
+- **Force pushes:** CI replaces the branch with `--force-with-lease`, which only succeeds if no other run has changed it in the meantime. Any protection on the branch must therefore block deletion but **not** force pushes. PR runs are not published; their reports stay as run artifacts.
 
 **Defects** found by tests are tracked as GitHub Issues, or described in the PR that fixes them.
