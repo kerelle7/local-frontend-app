@@ -39,33 +39,12 @@ jobs:
       - name: Check test naming convention
         run: node .github/scripts/check-test-ids.js
 
-      # Downloads system packages from the Ubuntu mirror, which is sometimes
-      # very slow. Each attempt gets its own time limit so a slow mirror costs
-      # minutes rather than the whole job, then the install is tried again.
+      # Each attempt has its own time limit (3m, then 4m), so a slow Ubuntu
+      # mirror costs minutes rather than the whole job. See the script; the
+      # retry path is exercised by .github/workflows/ci-selftest.yml.
       - name: Install Playwright browsers
         timeout-minutes: 10
-        run: |
-          attempt=0
-          # Healthy installs take about 40-55s. Attempt 1 catches a stuck
-          # download quickly; attempt 2 allows more for a slow but working mirror.
-          for limit in 3m 4m; do
-            attempt=$((attempt + 1))
-            if timeout --kill-after=30s "$limit" npx playwright install --with-deps; then
-              exit 0
-            fi
-            echo "::warning::Browser install attempt $attempt failed or exceeded $limit"
-            # Playwright starts apt-get through sudo, so timeout can't stop it:
-            # stop it here, wait for the package lock, and finish any package
-            # setup the stopped attempt left half-done
-            sudo pkill -KILL -x apt-get || true
-            sudo pkill -KILL -x dpkg || true
-            for _ in $(seq 60); do
-              sudo fuser /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock > /dev/null 2>&1 || break
-              sleep 1
-            done
-            sudo dpkg --configure -a || true
-          done
-          exit 1
+        run: bash .github/scripts/install-browsers.sh 3m 4m
 
       - name: Run tests
         run: npx playwright test

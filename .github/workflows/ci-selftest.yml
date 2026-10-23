@@ -1,0 +1,66 @@
+name: CI self-test
+
+# Tests the CI machinery rather than the app. Normal runs only take the
+# browser install's happy path, so this forces its retry path: attempt 1 gets
+# too little time to finish, and attempt 2 must recover. Runs weekly (to catch
+# runner image changes) and whenever the install script or workflows change.
+on:
+  schedule:
+    - cron: '0 6 * * 1' # Mondays 06:00 UTC
+  pull_request:
+    paths:
+      - .github/scripts/install-browsers.sh
+      - .github/workflows/tests.yml
+      - .github/workflows/ci-selftest.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-selftest-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-install-retry:
+    name: browser install retry
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 15s is too short for a healthy install (about 40-55s), so attempt 1
+      # times out mid-download and attempt 2 has to recover
+      - name: Install browsers with a forced first timeout
+        id: install
+        timeout-minutes: 10
+        run: bash .github/scripts/install-browsers.sh 15s 4m
+
+      - name: Check the retry path was taken
+        env:
+          ATTEMPTS: ${{ steps.install.outputs.attempts }}
+          STOPPED_APT: ${{ steps.install.outputs.stopped_apt }}
+        run: |
+          {
+            echo "## Browser install retry self-test"
+            echo ""
+            echo "| Attempts | Leftover apt-get stopped |"
+            echo "|---|---|"
+            echo "| ${ATTEMPTS:-none} | ${STOPPED_APT:-unknown} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$ATTEMPTS" != "2" ]; then
+            echo "::error::Expected the install to need 2 attempts, got '${ATTEMPTS}'. If attempt 1 finished within 15s, the retry path wasn't exercised; lower the forced limit."
+            exit 1
+          fi
+
+      # The installed browsers must actually work after an interrupted attempt
+      - name: Smoke-test the browsers
+        run: npx playwright test -g "TC-CNT-01" --reporter=list
