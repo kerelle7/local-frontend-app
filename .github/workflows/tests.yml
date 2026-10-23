@@ -118,8 +118,11 @@ jobs:
           name: test-reports
           path: artifact
 
-      # Runs for several commits can publish at once, so each attempt starts
-      # from the latest history and retries if another run pushed first.
+      # The branch is replaced by a single commit holding the current reports
+      # (the history lives in its folders), so its size stays bounded.
+      # Runs for several commits can publish at once: each attempt starts from
+      # the latest history, and --force-with-lease only replaces the branch if
+      # no other run has pushed since; otherwise it retries.
       - name: Add this commit's report to the history branch
         env:
           SITE_DIR: history
@@ -134,15 +137,18 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for attempt in 1 2 3 4 5; do
+            # expected = the branch's current commit, or empty if it doesn't exist yet
             if git fetch --depth 1 origin test-reports; then
-              git worktree add -B test-reports history FETCH_HEAD
+              expected=$(git rev-parse FETCH_HEAD)
+              git worktree add --detach history FETCH_HEAD
             else
+              expected=""
               git worktree add --orphan -B test-reports history
             fi
             node .github/scripts/build-report-site.js
             git -C history add -A
-            git -C history diff --cached --quiet || git -C history commit -q -m "Test report for ${SHA::7}"
-            if git -C history push origin test-reports; then exit 0; fi
+            commit=$(git -C history commit-tree "$(git -C history write-tree)" -m "Test reports, updated for ${SHA::7}")
+            if git push --force-with-lease="refs/heads/test-reports:$expected" origin "$commit:refs/heads/test-reports"; then exit 0; fi
             echo "The history branch changed during publishing; retrying (attempt $attempt)"
             git worktree remove --force history
             sleep $((attempt * 5))
