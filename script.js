@@ -6,3 +6,4 @@ btn.addEventListener('click', () => {
     count++;
     output.textContent = `Button clicked ${count} time(s)!`;
 });
+// Test Comment
