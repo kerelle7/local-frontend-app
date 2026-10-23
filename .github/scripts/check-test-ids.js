@@ -4,7 +4,10 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 
-const listing = execSync('npx playwright test --list --project chromium', { encoding: 'utf8' });
+// --reporter=list overrides the configured reporters, which would otherwise
+// write a JUnit file listing every test as skipped; if the real test run then
+// never happens, that file would be reported as its results
+const listing = execSync('npx playwright test --list --project chromium --reporter=list', { encoding: 'utf8' });
 const titles = [...listing.matchAll(/› ([^›\n]+)$/gm)].map((m) => m[1].trim());
 
 const errors = [];

@@ -39,8 +39,12 @@ jobs:
       - name: Check test naming convention
         run: node .github/scripts/check-test-ids.js
 
+      # Each attempt has its own time limit (3m, then 4m), so a slow Ubuntu
+      # mirror costs minutes rather than the whole job. See the script; the
+      # retry path is exercised by .github/workflows/ci-selftest.yml.
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        timeout-minutes: 10
+        run: bash .github/scripts/install-browsers.sh 3m 4m
 
       - name: Run tests
         run: npx playwright test
