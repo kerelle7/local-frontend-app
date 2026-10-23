@@ -33,12 +33,16 @@ for limit in "${limits[@]}"; do
     echo "::warning::Browser install attempt $attempt failed or exceeded $limit"
 
     # Playwright starts apt-get through sudo, so timeout can't stop it: stop it
-    # here, wait for the package lock, and finish any package setup the
-    # stopped attempt left half-done
+    # here, along with its download helpers (separate processes that would
+    # otherwise keep downloading), wait for the package lock, and finish any
+    # package setup the stopped attempt left half-done
+    echo "Package processes left by attempt $attempt:"
+    pgrep -a -f 'apt-get|/usr/lib/apt/methods/|dpkg' || echo "  (none)"
     if sudo pkill -KILL -x apt-get; then
         stopped_apt=true
         echo "Stopped a leftover apt-get"
     fi
+    sudo pkill -KILL -f '^/usr/lib/apt/methods/' || true
     sudo pkill -KILL -x dpkg || true
     for _ in $(seq 60); do
         sudo fuser /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock > /dev/null 2>&1 || break
