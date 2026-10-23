@@ -9,10 +9,11 @@ on:
 permissions:
   contents: read
 
-# Cancel an older run when new commits are pushed to the same branch
+# On PRs, cancel an older run when new commits are pushed. On master every
+# commit runs to completion so each one gets a published report.
 concurrency:
   group: tests-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   tests:
@@ -87,3 +88,83 @@ jobs:
           path: tests/**/*-snapshots/
           if-no-files-found: ignore
           retention-days: 30
+
+  # Publishes this commit's reports to GitHub Pages under /test-reports/,
+  # alongside the app at the site root. History is kept on the
+  # `test-reports` branch (see .github/scripts/build-report-site.js).
+  publish-reports:
+    name: publish reports
+    needs: tests
+    # Only master commits are published; PR results stay as run artifacts.
+    # Runs even when tests fail, since that's when the report matters most.
+    if: ${{ !cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # push to the test-reports branch
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}test-reports/
+    concurrency:
+      group: publish-reports
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      # Missing if the test job failed before uploading; the report page then says so
+      - name: Download this run's reports
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: test-reports
+          path: artifact
+
+      - name: Check out report history
+        run: |
+          if git fetch --depth 1 origin test-reports; then
+            git worktree add -B test-reports history FETCH_HEAD
+          else
+            git worktree add --orphan -b test-reports history
+          fi
+
+      - name: Add this commit's report
+        env:
+          SITE_DIR: history
+          REPORTS_DIR: artifact/reports
+          SHA: ${{ github.sha }}
+          REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          COMMIT_DATE: ${{ github.event.head_commit.timestamp }}
+          TESTS_RESULT: ${{ needs.tests.result }}
+        run: node .github/scripts/build-report-site.js
+
+      - name: Save report history
+        working-directory: history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Test report for ${GITHUB_SHA::7}"
+          git push origin test-reports
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site/test-reports
+          git archive HEAD -- . ':!.github' | tar -x -C _site
+          git -C history archive HEAD | tar -x -C _site/test-reports
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
