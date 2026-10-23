@@ -45,5 +45,8 @@ if (!fs.existsSync(summaryPath)) {
 
 const text = out.join('\n');
 if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, text + '\n');
+// Also kept as a file for the pull request comment
+fs.mkdirSync('reports', { recursive: true });
+fs.writeFileSync('reports/summary.md', text + '\n');
 console.log(text);
 if (!coverageOk) process.exit(1);
