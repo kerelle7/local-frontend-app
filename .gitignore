@@ -9,3 +9,9 @@ Desktop.ini
 .idea/
 *.swp
 *.swo
+
+# Node / test output
+node_modules/
+test-results/
+reports/
+blob-report/
