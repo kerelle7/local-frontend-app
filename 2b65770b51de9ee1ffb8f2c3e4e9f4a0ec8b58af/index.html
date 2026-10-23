@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test report 2b65770</title>
+<style>
+:root { color-scheme: light; --bg: #f4f4f9; --surface: #fff; --text: #333; --muted: #666;
+  --border: #e5e5ea; --accent: #0068d6; --pass: #1a7f37; --fail: #cf222e; }
+@media (prefers-color-scheme: dark) { :root { color-scheme: dark; --bg: #121218; --surface: #1d1d26;
+  --text: #e8e8ee; --muted: #a1a1ad; --border: #2c2c38; --accent: #39ff14; --pass: #3fb950; --fail: #ff7b72; } }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.5; }
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 24px; margin: 0 0 4px; } h2 { font-size: 18px; margin: 28px 0 8px; }
+p { margin: 4px 0; } .muted { color: var(--muted); }
+a { color: var(--accent); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 0; overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+td.message { white-space: normal; min-width: 220px; }
+th { color: var(--muted); font-weight: 600; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; }
+.badge { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid currentColor; }
+.passed { color: var(--pass); } .failed { color: var(--fail); } .unknown, .cancelled, .skipped { color: var(--muted); }
+.links { display: flex; flex-wrap: wrap; gap: 2px 12px; white-space: normal; }
+td .links { max-width: 170px; }
+</style>
+</head>
+<body><main>
+
+<p><a href="../">← All runs</a></p>
+<h1>Test report for <code>2b65770</code> <span class="badge passed">passed</span></h1>
+<p class="message">Merge pull request #7 from kerelle7/ci/browser-install-retry</p>
+<p class="muted">2026-10-23 16:49 UTC · <a href="https://github.com/kerelle7/local-frontend-app/commit/2b65770b51de9ee1ffb8f2c3e4e9f4a0ec8b58af">View commit</a></p>
+<p><span class="links"><a href="./">Summary</a><a href="./html/">Report</a><a href="./coverage/">Coverage</a><a href="./junit.xml">JUnit</a><a href="https://github.com/kerelle7/local-frontend-app/actions/runs/39989927622">CI run</a></span></p>
+
+<h2>Results</h2>
+<div class="card"><table>
+<tr><th class="num">Total</th><th class="num">Passed</th><th class="num">Failed</th><th class="num">Skipped</th></tr>
+<tr><td class="num">100</td><td class="num">85</td><td class="num">0</td><td class="num">15</td></tr>
+</table></div>
+
+
+<h2>Coverage <span class="muted">(Chromium, app scripts; gate 90% lines)</span></h2>
+<div class="card"><table>
+<tr><th>File</th><th class="num">Lines</th><th class="num">Branches</th><th class="num">Functions</th></tr>
+<tr><td><strong>Total</strong></td><td class="num">100%</td><td class="num">100%</td><td class="num">100%</td></tr><tr><td><code>script.js</code></td><td class="num">100%</td><td class="num">100%</td><td class="num">100%</td></tr><tr><td><code>theme-init.js</code></td><td class="num">100%</td><td class="num">100%</td><td class="num">100%</td></tr>
+</table></div>
+
+</main></body>
+</html>

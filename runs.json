@@ -1,0 +1,78 @@
+[
+  {
+    "sha": "2b65770b51de9ee1ffb8f2c3e4e9f4a0ec8b58af",
+    "message": "Merge pull request #7 from kerelle7/ci/browser-install-retry",
+    "date": "2026-10-23T17:49:09+01:00",
+    "runUrl": "https://github.com/kerelle7/local-frontend-app/actions/runs/39989927622",
+    "result": "passed",
+    "totals": {
+      "total": 100,
+      "passed": 85,
+      "failed": 0,
+      "skipped": 15
+    },
+    "lineCoverage": 100,
+    "files": {
+      "html": true,
+      "coverage": true,
+      "junit": true
+    }
+  },
+  {
+    "sha": "7583390084f673a764eb41288b88a5c3089e8a32",
+    "message": "Merge pull request #6 from kerelle7/ci/pages-artifact-per-attempt",
+    "date": "2026-10-23T16:54:16+01:00",
+    "runUrl": "https://github.com/kerelle7/local-frontend-app/actions/runs/39982260464",
+    "result": "passed",
+    "totals": {
+      "total": 100,
+      "passed": 85,
+      "failed": 0,
+      "skipped": 15
+    },
+    "lineCoverage": 100,
+    "files": {
+      "html": true,
+      "coverage": true,
+      "junit": true
+    }
+  },
+  {
+    "sha": "279eac60331d8b4ea6f7cdabc23af4d693c2757e",
+    "message": "Merge pull request #5 from kerelle7/ci/single-commit-report-history",
+    "date": "2026-10-23T16:25:01+01:00",
+    "runUrl": "https://github.com/kerelle7/local-frontend-app/actions/runs/39978082866",
+    "result": "passed",
+    "totals": {
+      "total": 100,
+      "passed": 85,
+      "failed": 0,
+      "skipped": 15
+    },
+    "lineCoverage": 100,
+    "files": {
+      "html": true,
+      "coverage": true,
+      "junit": true
+    }
+  },
+  {
+    "sha": "7bb01a6e4776b3660c6eb2870962d48b94e9d33c",
+    "message": "Merge pull request #4 from kerelle7/ci/pages-test-reports",
+    "date": "2026-10-23T15:00:12+01:00",
+    "runUrl": "https://github.com/kerelle7/local-frontend-app/actions/runs/39965916247",
+    "result": "passed",
+    "totals": {
+      "total": 100,
+      "passed": 85,
+      "failed": 0,
+      "skipped": 15
+    },
+    "lineCoverage": 100,
+    "files": {
+      "html": true,
+      "coverage": true,
+      "junit": true
+    }
+  }
+]

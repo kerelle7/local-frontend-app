@@ -1,0 +1,340 @@
+<testsuites id="" name="" tests="100" failures="0" skipped="15" errors="0" time="31.167634000000003">
+<testsuite name="accessibility.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="chromium" tests="3" failures="0" skipped="0" time="1.483" errors="0">
+<testcase name="A11Y: accessibility › TC-A11Y-01: no WCAG 2.1 A/AA violations in light mode" classname="accessibility.spec.js" time="0.671">
+</testcase>
+<testcase name="A11Y: accessibility › TC-A11Y-02: no WCAG 2.1 A/AA violations in dark mode" classname="accessibility.spec.js" time="0.625">
+</testcase>
+<testcase name="A11Y: accessibility › TC-A11Y-03: dark mode toggle is exposed as a named switch with its state" classname="accessibility.spec.js" time="0.187">
+</testcase>
+</testsuite>
+<testsuite name="counter.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="chromium" tests="2" failures="0" skipped="0" time="0.389" errors="0">
+<testcase name="CNT: click counter › TC-CNT-01: result message is empty before any click" classname="counter.spec.js" time="0.132">
+</testcase>
+<testcase name="CNT: click counter › TC-CNT-02: each click increments the count in the message" classname="counter.spec.js" time="0.257">
+</testcase>
+</testsuite>
+<testsuite name="no-flash.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="chromium" tests="5" failures="0" skipped="0" time="0.627" errors="0">
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-01: theme-init.js loads in &lt;head&gt; before the stylesheet, without defer/async" classname="no-flash.spec.js" time="0.123">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-02: index.html contains no inline scripts" classname="no-flash.spec.js" time="0.115">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-03: a saved theme wins over a conflicting OS setting on load" classname="no-flash.spec.js" time="0.126">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-04: an invalid saved value falls back to the OS theme" classname="no-flash.spec.js" time="0.14">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-05: theme-init.js is render-blocking and finishes before first paint" classname="no-flash.spec.js" time="0.123">
+</testcase>
+</testsuite>
+<testsuite name="responsive.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="chromium" tests="3" failures="0" skipped="0" time="0.412" errors="0">
+<testcase name="RESP: phone-width layout › TC-RESP-01: no horizontal scroll at 375px in light mode" classname="responsive.spec.js" time="0.111">
+</testcase>
+<testcase name="RESP: phone-width layout › TC-RESP-02: no horizontal scroll at 375px in dark mode" classname="responsive.spec.js" time="0.115">
+</testcase>
+<testcase name="RESP: phone-width layout › TC-RESP-03: header title and toggle are both visible and do not overlap at 375px" classname="responsive.spec.js" time="0.186">
+</testcase>
+</testsuite>
+<testsuite name="theme-toggle.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="chromium" tests="8" failures="0" skipped="0" time="1.521" errors="0">
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-01: toggle switches light → dark → light and reports its state" classname="theme-toggle.spec.js" time="0.201">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-02: chosen theme is saved and restored after a reload" classname="theme-toggle.spec.js" time="0.203">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-03: with no saved choice the page starts in the OS theme" classname="theme-toggle.spec.js" time="0.129">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-04: with no saved choice the page follows a live OS change" classname="theme-toggle.spec.js" time="0.169">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-05: a manual choice is kept when the OS theme changes" classname="theme-toggle.spec.js" time="0.213">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-06: a manual choice is kept on OS change when storage is blocked" classname="theme-toggle.spec.js" time="0.226">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-07: toggle can be focused and operated with the keyboard" classname="theme-toggle.spec.js" time="0.154">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-08: each theme applies its palette to page, card and button" classname="theme-toggle.spec.js" time="0.226">
+</testcase>
+</testsuite>
+<testsuite name="visual.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="chromium" tests="4" failures="0" skipped="0" time="0.908" errors="0">
+<testcase name="VIS: visual appearance › TC-VIS-01: light mode matches the desktop baseline" classname="visual.spec.js" time="0.27">
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-02: dark mode matches the desktop baseline" classname="visual.spec.js" time="0.252">
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-03: light mode matches the mobile baseline" classname="visual.spec.js" time="0.195">
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-04: dark mode matches the mobile baseline" classname="visual.spec.js" time="0.191">
+</testcase>
+</testsuite>
+<testsuite name="accessibility.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="firefox" tests="3" failures="0" skipped="0" time="5.377" errors="0">
+<testcase name="A11Y: accessibility › TC-A11Y-01: no WCAG 2.1 A/AA violations in light mode" classname="accessibility.spec.js" time="2.774">
+</testcase>
+<testcase name="A11Y: accessibility › TC-A11Y-02: no WCAG 2.1 A/AA violations in dark mode" classname="accessibility.spec.js" time="2.241">
+</testcase>
+<testcase name="A11Y: accessibility › TC-A11Y-03: dark mode toggle is exposed as a named switch with its state" classname="accessibility.spec.js" time="0.362">
+</testcase>
+</testsuite>
+<testsuite name="counter.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="firefox" tests="2" failures="0" skipped="0" time="0.785" errors="0">
+<testcase name="CNT: click counter › TC-CNT-01: result message is empty before any click" classname="counter.spec.js" time="0.305">
+</testcase>
+<testcase name="CNT: click counter › TC-CNT-02: each click increments the count in the message" classname="counter.spec.js" time="0.48">
+</testcase>
+</testsuite>
+<testsuite name="no-flash.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="firefox" tests="5" failures="0" skipped="1" time="1.389" errors="0">
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-01: theme-init.js loads in &lt;head&gt; before the stylesheet, without defer/async" classname="no-flash.spec.js" time="0.299">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-02: index.html contains no inline scripts" classname="no-flash.spec.js" time="0.288">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-03: a saved theme wins over a conflicting OS setting on load" classname="no-flash.spec.js" time="0.307">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-04: an invalid saved value falls back to the OS theme" classname="no-flash.spec.js" time="0.279">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-05: theme-init.js is render-blocking and finishes before first paint" classname="no-flash.spec.js">
+<properties>
+<property name="skip" value="renderBlockingStatus and paint timing are Chromium-only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="responsive.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="firefox" tests="3" failures="0" skipped="0" time="0.993" errors="0">
+<testcase name="RESP: phone-width layout › TC-RESP-01: no horizontal scroll at 375px in light mode" classname="responsive.spec.js" time="0.306">
+</testcase>
+<testcase name="RESP: phone-width layout › TC-RESP-02: no horizontal scroll at 375px in dark mode" classname="responsive.spec.js" time="0.299">
+</testcase>
+<testcase name="RESP: phone-width layout › TC-RESP-03: header title and toggle are both visible and do not overlap at 375px" classname="responsive.spec.js" time="0.388">
+</testcase>
+</testsuite>
+<testsuite name="theme-toggle.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="firefox" tests="8" failures="0" skipped="0" time="5.31" errors="0">
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-01: toggle switches light → dark → light and reports its state" classname="theme-toggle.spec.js" time="0.499">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-02: chosen theme is saved and restored after a reload" classname="theme-toggle.spec.js" time="0.54">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-03: with no saved choice the page starts in the OS theme" classname="theme-toggle.spec.js" time="0.359">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-04: with no saved choice the page follows a live OS change" classname="theme-toggle.spec.js" time="0.433">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-05: a manual choice is kept when the OS theme changes" classname="theme-toggle.spec.js" time="0.457">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-06: a manual choice is kept on OS change when storage is blocked" classname="theme-toggle.spec.js" time="1.305">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-07: toggle can be focused and operated with the keyboard" classname="theme-toggle.spec.js" time="1.258">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-08: each theme applies its palette to page, card and button" classname="theme-toggle.spec.js" time="0.459">
+</testcase>
+</testsuite>
+<testsuite name="visual.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="firefox" tests="4" failures="0" skipped="4" time="0.91" errors="0">
+<testcase name="VIS: visual appearance › TC-VIS-01: light mode matches the desktop baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-02: dark mode matches the desktop baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-03: light mode matches the mobile baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-04: dark mode matches the mobile baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="webkit" tests="3" failures="0" skipped="0" time="10.381" errors="0">
+<testcase name="A11Y: accessibility › TC-A11Y-01: no WCAG 2.1 A/AA violations in light mode" classname="accessibility.spec.js" time="4.913">
+</testcase>
+<testcase name="A11Y: accessibility › TC-A11Y-02: no WCAG 2.1 A/AA violations in dark mode" classname="accessibility.spec.js" time="4.915">
+</testcase>
+<testcase name="A11Y: accessibility › TC-A11Y-03: dark mode toggle is exposed as a named switch with its state" classname="accessibility.spec.js" time="0.553">
+</testcase>
+</testsuite>
+<testsuite name="counter.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="webkit" tests="2" failures="0" skipped="0" time="1.1" errors="0">
+<testcase name="CNT: click counter › TC-CNT-01: result message is empty before any click" classname="counter.spec.js" time="0.453">
+</testcase>
+<testcase name="CNT: click counter › TC-CNT-02: each click increments the count in the message" classname="counter.spec.js" time="0.647">
+</testcase>
+</testsuite>
+<testsuite name="no-flash.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="webkit" tests="5" failures="0" skipped="1" time="2.106" errors="0">
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-01: theme-init.js loads in &lt;head&gt; before the stylesheet, without defer/async" classname="no-flash.spec.js" time="0.414">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-02: index.html contains no inline scripts" classname="no-flash.spec.js" time="0.451">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-03: a saved theme wins over a conflicting OS setting on load" classname="no-flash.spec.js" time="0.446">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-04: an invalid saved value falls back to the OS theme" classname="no-flash.spec.js" time="0.423">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-05: theme-init.js is render-blocking and finishes before first paint" classname="no-flash.spec.js">
+<properties>
+<property name="skip" value="renderBlockingStatus and paint timing are Chromium-only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="responsive.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="webkit" tests="3" failures="0" skipped="0" time="1.358" errors="0">
+<testcase name="RESP: phone-width layout › TC-RESP-01: no horizontal scroll at 375px in light mode" classname="responsive.spec.js" time="0.36">
+</testcase>
+<testcase name="RESP: phone-width layout › TC-RESP-02: no horizontal scroll at 375px in dark mode" classname="responsive.spec.js" time="0.375">
+</testcase>
+<testcase name="RESP: phone-width layout › TC-RESP-03: header title and toggle are both visible and do not overlap at 375px" classname="responsive.spec.js" time="0.623">
+</testcase>
+</testsuite>
+<testsuite name="theme-toggle.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="webkit" tests="8" failures="0" skipped="0" time="4.558" errors="0">
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-01: toggle switches light → dark → light and reports its state" classname="theme-toggle.spec.js" time="0.8">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-02: chosen theme is saved and restored after a reload" classname="theme-toggle.spec.js" time="0.638">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-03: with no saved choice the page starts in the OS theme" classname="theme-toggle.spec.js" time="0.425">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-04: with no saved choice the page follows a live OS change" classname="theme-toggle.spec.js" time="0.542">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-05: a manual choice is kept when the OS theme changes" classname="theme-toggle.spec.js" time="0.557">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-06: a manual choice is kept on OS change when storage is blocked" classname="theme-toggle.spec.js" time="0.576">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-07: toggle can be focused and operated with the keyboard" classname="theme-toggle.spec.js" time="0.501">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-08: each theme applies its palette to page, card and button" classname="theme-toggle.spec.js" time="0.519">
+</testcase>
+</testsuite>
+<testsuite name="visual.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="webkit" tests="4" failures="0" skipped="4" time="1.313" errors="0">
+<testcase name="VIS: visual appearance › TC-VIS-01: light mode matches the desktop baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-02: dark mode matches the desktop baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-03: light mode matches the mobile baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-04: dark mode matches the mobile baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="accessibility.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="mobile-safari" tests="3" failures="0" skipped="0" time="2.627" errors="0">
+<testcase name="A11Y: accessibility › TC-A11Y-01: no WCAG 2.1 A/AA violations in light mode" classname="accessibility.spec.js" time="1.06">
+</testcase>
+<testcase name="A11Y: accessibility › TC-A11Y-02: no WCAG 2.1 A/AA violations in dark mode" classname="accessibility.spec.js" time="1.053">
+</testcase>
+<testcase name="A11Y: accessibility › TC-A11Y-03: dark mode toggle is exposed as a named switch with its state" classname="accessibility.spec.js" time="0.514">
+</testcase>
+</testsuite>
+<testsuite name="counter.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="mobile-safari" tests="2" failures="0" skipped="0" time="1.077" errors="0">
+<testcase name="CNT: click counter › TC-CNT-01: result message is empty before any click" classname="counter.spec.js" time="0.415">
+</testcase>
+<testcase name="CNT: click counter › TC-CNT-02: each click increments the count in the message" classname="counter.spec.js" time="0.662">
+</testcase>
+</testsuite>
+<testsuite name="no-flash.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="mobile-safari" tests="5" failures="0" skipped="1" time="1.916" errors="0">
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-01: theme-init.js loads in &lt;head&gt; before the stylesheet, without defer/async" classname="no-flash.spec.js" time="0.366">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-02: index.html contains no inline scripts" classname="no-flash.spec.js" time="0.402">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-03: a saved theme wins over a conflicting OS setting on load" classname="no-flash.spec.js" time="0.449">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-04: an invalid saved value falls back to the OS theme" classname="no-flash.spec.js" time="0.399">
+</testcase>
+<testcase name="FLASH: theme applied before first paint › TC-FLASH-05: theme-init.js is render-blocking and finishes before first paint" classname="no-flash.spec.js">
+<properties>
+<property name="skip" value="renderBlockingStatus and paint timing are Chromium-only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="responsive.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="mobile-safari" tests="3" failures="0" skipped="0" time="1.375" errors="0">
+<testcase name="RESP: phone-width layout › TC-RESP-01: no horizontal scroll at 375px in light mode" classname="responsive.spec.js" time="0.422">
+</testcase>
+<testcase name="RESP: phone-width layout › TC-RESP-02: no horizontal scroll at 375px in dark mode" classname="responsive.spec.js" time="0.412">
+</testcase>
+<testcase name="RESP: phone-width layout › TC-RESP-03: header title and toggle are both visible and do not overlap at 375px" classname="responsive.spec.js" time="0.541">
+</testcase>
+</testsuite>
+<testsuite name="theme-toggle.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="mobile-safari" tests="8" failures="0" skipped="0" time="4.282" errors="0">
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-01: toggle switches light → dark → light and reports its state" classname="theme-toggle.spec.js" time="0.589">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-02: chosen theme is saved and restored after a reload" classname="theme-toggle.spec.js" time="0.567">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-03: with no saved choice the page starts in the OS theme" classname="theme-toggle.spec.js" time="0.418">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-04: with no saved choice the page follows a live OS change" classname="theme-toggle.spec.js" time="0.542">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-05: a manual choice is kept when the OS theme changes" classname="theme-toggle.spec.js" time="0.57">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-06: a manual choice is kept on OS change when storage is blocked" classname="theme-toggle.spec.js" time="0.61">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-07: toggle can be focused and operated with the keyboard" classname="theme-toggle.spec.js" time="0.469">
+</testcase>
+<testcase name="THEME: dark mode toggle and persistence › TC-THEME-08: each theme applies its palette to page, card and button" classname="theme-toggle.spec.js" time="0.517">
+</testcase>
+</testsuite>
+<testsuite name="visual.spec.js" timestamp="2026-10-23T16:50:01.879Z" hostname="mobile-safari" tests="4" failures="0" skipped="4" time="1.198" errors="0">
+<testcase name="VIS: visual appearance › TC-VIS-01: light mode matches the desktop baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-02: dark mode matches the desktop baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-03: light mode matches the mobile baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="VIS: visual appearance › TC-VIS-04: dark mode matches the mobile baseline" classname="visual.spec.js">
+<properties>
+<property name="skip" value="Visual baselines are Linux Chromium only">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>
