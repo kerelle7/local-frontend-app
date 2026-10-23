@@ -21,16 +21,20 @@ function savedTheme() {
     try { return localStorage.getItem('theme'); } catch (e) { return null; }
 }
 
+// Tracked in memory too, so a manual choice sticks even when storage is unavailable
+let userChoseTheme = Boolean(savedTheme());
+
 applyTheme(document.documentElement.dataset.theme);
 
 themeToggle.addEventListener('click', () => {
     const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     applyTheme(next);
+    userChoseTheme = true;
     try { localStorage.setItem('theme', next); } catch (e) {}
 });
 
 // Follow OS changes until the user picks a theme explicitly
 darkQuery.addEventListener('change', (e) => {
-    if (!savedTheme()) applyTheme(e.matches ? 'dark' : 'light');
+    if (!userChoseTheme) applyTheme(e.matches ? 'dark' : 'light');
 });
 // Test Comment
